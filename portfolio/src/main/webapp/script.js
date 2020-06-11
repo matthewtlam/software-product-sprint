@@ -30,8 +30,28 @@ function addRandomQuote() {
 }
 
 function getGreeting() {
-  fetch('/data').then(response => response.text()).then((greeting) => {
-    document.getElementById('greeting-container').innerHTML = greeting;
+//   fetch('/data').then(response => response.text()).then((greeting) => {
+//     document.getElementById('greeting-container').innerHTML = greeting;
+//   });
+
+  fetch('/data').then(response => response.json()).then((stats) => {
+ 
+    const statsListElement = document.getElementById('greeting-container');
+    statsListElement.innerHTML = '';
+
+    // for each message, display it in a list
+    stats.messages.forEach(element => {
+        statsListElement.appendChild(
+            createListElement(element));
+    });
+
   });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
 
