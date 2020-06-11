@@ -13,18 +13,25 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random quote to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['The only version of yourself that you should compare yourself to is past versions of yourself.',
+function addRandomQuote() {
+  const quotes =
+      ['The only version of yourself that you should compare yourself to is past versions of yourself. \n-Allison Raskin',
        'I am going my way and doing my best!',
-       ''];
+       "What I did each day would determine the kind of person I'd become. \n-Chris Hadfield"];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  // Pick a random quote.
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const quoteContainer = document.getElementById('quote-container');
+  quoteContainer.innerText = quote;
 }
+
+function getGreeting() {
+  fetch('/data').then(response => response.text()).then((greeting) => {
+    document.getElementById('greeting-container').innerHTML = greeting;
+  });
+}
+

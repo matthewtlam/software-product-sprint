@@ -7,7 +7,6 @@
     <script src="script.js"></script>
     <!-- Navigation Bar-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <div class="topnav" id="myTopnav">
     <a href="/index.html" class="active">Home</a>
     <a href="/blogs.html">Blog</a>
@@ -20,13 +19,18 @@
   <body>
     <div id="content">
       <h1>My Portfolio</h1>
-      <button onclick="addRandomGreeting()">Click here to get a greeting message</button>
+      <button onclick="getGreeting()">Greetings!</button>
       <div id="greeting-container"></div>
+
       <p>Hey, my name is Matthew Lam and I am a 2nd year CS student at the University of Waterloo.
          I am passionate about mental health and LGBTQ+ rights. A few of my hobbies include video games, rock climbing and listening to podcasts.
       </p>
       <img src="/images/profile.jpg" alt="Profile Picture of Matthew" class="center">
-
+      <br>
+      <button onclick="addRandomQuote()">Favourite Quotes</button>
+      <br>
+      <div id="quote-container"></div>
+      <br>
       <a href="https://www.linkedin.com/in/matthew-l-141a08126/">linkedin</a>
       <a href="https://github.com/matthewlam99">github</a>
     </div>
