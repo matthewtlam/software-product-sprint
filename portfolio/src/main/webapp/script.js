@@ -18,7 +18,8 @@
 function addRandomGreeting() {
   const greetings =
       ['The only version of yourself that you should compare yourself to is past versions of yourself.',
-       'I am going my way and doing my best!'];
+       'I am going my way and doing my best!',
+       ''];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
