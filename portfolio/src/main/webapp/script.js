@@ -30,14 +30,14 @@ function addRandomQuote() {
 }
 
 function getGreeting() {
-  fetch('/data').then(response => response.json()).then((stats) => {
+  fetch('/data').then(response => response.json()).then((greetings) => {
  
-    const statsListElement = document.getElementById('greeting-container');
-    statsListElement.innerHTML = '';
+    const greetingsListElement = document.getElementById('greeting-container');
+    greetingsListElement.innerHTML = '';
 
     // for each message, display it in a list
-    stats.messages.forEach(element => {
-        statsListElement.appendChild(
+    greetings.forEach(element => {
+        greetingsListElement.appendChild(
             createListElement(element));
     });
 

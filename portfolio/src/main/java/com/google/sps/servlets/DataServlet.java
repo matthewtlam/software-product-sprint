@@ -14,7 +14,6 @@
 
 package com.google.sps.servlets;
 import com.google.gson.Gson;
-import com.google.sps.data.Data;
 import java.util.ArrayList;
 import java.lang.String;
 import java.io.IOException;
@@ -35,12 +34,25 @@ public class DataServlet extends HttpServlet {
     messages.add("Hola!");
     messages.add("Aloha!");
 
-    // Convert ArrayList to an Object to Json.
-    Data data = new Data(messages);
+    // Convert ArrayList to Json.
     Gson gson = new Gson();
-    String json = gson.toJson(data);
+    String json = gson.toJson(messages);
     
     response.setContentType("text/html;");
     response.getWriter().println(json);
   }
+
+//   @Override
+//   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//     // If the user sends another POST request after the game is over, then start a new game.
+
+//     // Get the input from the form.
+//     // int playerChoice = getPlayerChoice(request);
+//     // response.setContentType("text/html");
+//     // response.getWriter().println("Please enter an integer between 1 and 3.");
+//     // Redirect back to the HTML page.
+//     response.sendRedirect("/index.html");
+//   }
+
+  
 }
