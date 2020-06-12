@@ -17,8 +17,8 @@
  */
 function addRandomQuote() {
   const quotes =
-      ['The only version of yourself that you should compare yourself to is past versions of yourself. \n-Allison Raskin',
-       'I am going my way and doing my best!',
+      ["The only version of yourself that you should compare yourself to is past versions of yourself. \n-Allison Raskin",
+       "I am going my way and doing my best!",
        "What I did each day would determine the kind of person I'd become. \n-Chris Hadfield"];
 
   // Pick a random quote.
@@ -30,10 +30,6 @@ function addRandomQuote() {
 }
 
 function getGreeting() {
-//   fetch('/data').then(response => response.text()).then((greeting) => {
-//     document.getElementById('greeting-container').innerHTML = greeting;
-//   });
-
   fetch('/data').then(response => response.json()).then((stats) => {
  
     const statsListElement = document.getElementById('greeting-container');
