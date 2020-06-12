@@ -29,15 +29,15 @@ function addRandomQuote() {
   quoteContainer.innerText = quote;
 }
 
-function getGreeting() {
-  fetch('/data').then(response => response.json()).then((greetings) => {
+function getComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
  
-    const greetingsListElement = document.getElementById('greeting-container');
-    greetingsListElement.innerHTML = '';
+    const commentsListElement = document.getElementById('comments-container');
+    commentsListElement.innerHTML = '';
 
     // for each message, display it in a list
-    greetings.forEach(element => {
-        greetingsListElement.appendChild(
+    comments.forEach(element => {
+        commentsListElement.appendChild(
             createListElement(element));
     });
 

@@ -25,34 +25,48 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+    
+  ArrayList<String> comments = new ArrayList<String>();
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> messages = new ArrayList<String>();
-    messages.add("Hello World!");
-    messages.add("Bonjour!");
-    messages.add("Hola!");
-    messages.add("Aloha!");
 
     // Convert ArrayList to Json.
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
+    String json = gson.toJson(comments);
     
     response.setContentType("text/html;");
     response.getWriter().println(json);
   }
 
-//   @Override
-//   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//     // If the user sends another POST request after the game is over, then start a new game.
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = getParameter(request, "name-input", "");
+    String text = getParameter(request, "text-input", "");
+    boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
 
-//     // Get the input from the form.
-//     // int playerChoice = getPlayerChoice(request);
-//     // response.setContentType("text/html");
-//     // response.getWriter().println("Please enter an integer between 1 and 3.");
-//     // Redirect back to the HTML page.
-//     response.sendRedirect("/index.html");
-//   }
+    // Convert the text to upper case.
+    if (upperCase) {
+      text = text.toUpperCase();
+    }
 
-  
+    String comment = name + ": " + text;
+
+    // Add the comment to the array
+    comments.add(comment);
+
+    // Respond with the result
+    response.setContentType("text/html;");
+    response.getWriter().println(comment);
+    response.sendRedirect("/index.html");
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
 }
