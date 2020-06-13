@@ -13,7 +13,16 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Comment;
+
 import java.util.ArrayList;
 import java.lang.String;
 import java.io.IOException;
@@ -26,10 +35,26 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
     
-  ArrayList<String> comments = new ArrayList<String>();
+  //ArrayList<String> comments = new ArrayList<String>();
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      // Retrieve comments based on latest timestamp.
+      Query query = new Query("Comments").addSort("timestamp", SortDirection.DESCENDING);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      PreparedQuery results = datastore.prepare(query);
+      
+      // Create comment object from the entity data.
+      ArrayList<Comment> comments = new ArrayList<>();
+      for (Entity entity : results.asIterable()) {
+        long id = entity.getKey().getId();
+        String name = (String) entity.getProperty("name");
+        long timestamp = (long) entity.getProperty("timestamp");
+        String text = (String) entity.getProperty("text");
+
+        Comment comment = new Comment(id, name, timestamp, text);
+        comments.add(comment);
+      }
 
     // Convert ArrayList to Json.
     Gson gson = new Gson();
@@ -51,14 +76,20 @@ public class DataServlet extends HttpServlet {
       text = text.toUpperCase();
     }
 
-    String comment = name + ": " + text;
+    long timestamp = System.currentTimeMillis();
 
-    // Add the comment to the array
-    comments.add(comment);
+    // Store data into entity.
+    Entity commentEntity = new Entity("Comments");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("text", text);
 
-    // Respond with the result
+    // Create Datastore and store comment data.
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    // Respond with the result.
     response.setContentType("text/html;");
-    response.getWriter().println(comment);
     response.sendRedirect("/index.html");
   }
 

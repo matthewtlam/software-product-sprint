@@ -29,25 +29,36 @@ function addRandomQuote() {
   quoteContainer.innerText = quote;
 }
 
+// Retrieves the comments from Datastore.
 function getComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
- 
+      
     const commentsListElement = document.getElementById('comments-container');
     commentsListElement.innerHTML = '';
 
     // for each message, display it in a list
     comments.forEach(element => {
-        commentsListElement.appendChild(
-            createListElement(element));
+        commentsListElement.appendChild(createListElement(element));
     });
-
   });
 }
 
-/** Creates an <li> element containing text. */
+/** Creates an <li> element containing name, date, text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  liElement.className = 'comment';
+  const nameElement = document.createElement('span');
+  nameElement.innerText = text.name;
+  const dateElement = document.createElement('span');
+  const date = new Date(text.timestamp);
+  const dateTime = " - " + date.toDateString() + " " + date.getHours() + ":" + date.getMinutes();
+  dateElement.innerText = dateTime;
+  const textElement = document.createElement('p');
+  textElement.innerText = text.text;
+
+  liElement.appendChild(nameElement);
+  liElement.appendChild(dateElement);
+  liElement.appendChild(textElement);
   return liElement;
 }
 
