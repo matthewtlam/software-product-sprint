@@ -13,18 +13,52 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random quote to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['The only version of yourself that you should compare yourself to is past versions of yourself.',
-       'I am going my way and doing my best!',
-       ''];
+function addRandomQuote() {
+  const quotes =
+      ["The only version of yourself that you should compare yourself to is past versions of yourself. \n-Allison Raskin",
+       "I am going my way and doing my best!",
+       "What I did each day would determine the kind of person I'd become. \n-Chris Hadfield"];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  // Pick a random quote.
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const quoteContainer = document.getElementById('quote-container');
+  quoteContainer.innerText = quote;
 }
+
+// Retrieves the comments from Datastore.
+function getComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+      
+    const commentsListElement = document.getElementById('comments-container');
+    commentsListElement.innerHTML = '';
+
+    // for each message, display it in a list
+    comments.forEach(element => {
+        commentsListElement.appendChild(createListElement(element));
+    });
+  });
+}
+
+/** Creates an <li> element containing name, date, text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.className = 'comment';
+  const nameElement = document.createElement('span');
+  nameElement.innerText = text.name;
+  const dateElement = document.createElement('span');
+  const date = new Date(text.timestamp);
+  const dateTime = " - " + date.toDateString() + " " + date.getHours() + ":" + date.getMinutes();
+  dateElement.innerText = dateTime;
+  const textElement = document.createElement('p');
+  textElement.innerText = text.text;
+
+  liElement.appendChild(nameElement);
+  liElement.appendChild(dateElement);
+  liElement.appendChild(textElement);
+  return liElement;
+}
+
