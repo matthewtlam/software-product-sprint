@@ -22,6 +22,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.data.Comment;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 
 import java.util.ArrayList;
 import java.lang.String;
@@ -51,8 +54,9 @@ public class DataServlet extends HttpServlet {
         String name = (String) entity.getProperty("name");
         long timestamp = (long) entity.getProperty("timestamp");
         String text = (String) entity.getProperty("text");
+        double sentimentScore = (double) entity.getProperty("sentimentScore");
 
-        Comment comment = new Comment(id, name, timestamp, text);
+        Comment comment = new Comment(id, name, timestamp, text, sentimentScore);
         comments.add(comment);
       }
 
@@ -70,19 +74,26 @@ public class DataServlet extends HttpServlet {
     String name = getParameter(request, "name-input", "");
     String text = getParameter(request, "text-input", "");
     boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
+    long timestamp = System.currentTimeMillis();
 
     // Convert the text to upper case.
     if (upperCase) {
       text = text.toUpperCase();
     }
 
-    long timestamp = System.currentTimeMillis();
+    // Sentiment Analysis of the comment
+    Document doc = Document.newBuilder().setContent(text).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    double score = sentiment.getScore();
+    languageService.close();
 
     // Store data into entity.
     Entity commentEntity = new Entity("Comments");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("timestamp", timestamp);
     commentEntity.setProperty("text", text);
+    commentEntity.setProperty("sentimentScore", score);
 
     // Create Datastore and store comment data.
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
