@@ -49,7 +49,7 @@ function createListElement(text) {
   liElement.className = 'comment';
 
   const nameElement = document.createElement('span');
-  nameElement.innerText = text.name + " ";
+  nameElement.innerText = text.name;
 
   const dateElement = document.createElement('span');
   const date = new Date(text.timestamp);
@@ -59,11 +59,15 @@ function createListElement(text) {
   const textElement = document.createElement('p');
   textElement.innerText = text.text;
 
+  /** 
+   * The sentimentScore is a float that ranges from [-1.0, 1.0]
+   * Note that the SENTIMENT_THRESHOLD of 0.2 is an artibtray value. 
+   */
   const sentimentScoreElement = document.createElement('img');
-  const score = Math.round(text.sentimentScore * 100) / 100
-  if (score > 0.2) {
+  const SENTIMENT_THRESHOLD = 0.2;
+  if (text.sentimentScore > SENTIMENT_THRESHOLD) {
       sentimentScoreElement.src = "/images/smile.png";
-  } else if (score < 0.2){
+  } else if (text.sentimentScore < SENTIMENT_THRESHOLD){
       sentimentScoreElement.src = "/images/sad.png";
   }else{
       sentimentScoreElement.src = "/images/neutral.png";
