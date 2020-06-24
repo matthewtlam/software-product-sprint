@@ -47,18 +47,34 @@ function getComments() {
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.className = 'comment';
+
   const nameElement = document.createElement('span');
-  nameElement.innerText = text.name;
+  nameElement.innerText = text.name + " ";
+
   const dateElement = document.createElement('span');
   const date = new Date(text.timestamp);
   const dateTime = " - " + date.toDateString() + " " + date.getHours() + ":" + date.getMinutes();
   dateElement.innerText = dateTime;
+
   const textElement = document.createElement('p');
   textElement.innerText = text.text;
 
+  const sentimentScoreElement = document.createElement('img');
+  const score = Math.round(text.sentimentScore * 100) / 100
+  if (score > 0.2) {
+      sentimentScoreElement.src = "/images/smile.png";
+  } else if (score < 0.2){
+      sentimentScoreElement.src = "/images/sad.png";
+  }else{
+      sentimentScoreElement.src = "/images/neutral.png";
+  }
+  sentimentScoreElement.width = 18;
+
   liElement.appendChild(nameElement);
+  liElement.appendChild(sentimentScoreElement);
   liElement.appendChild(dateElement);
   liElement.appendChild(textElement);
+  
   return liElement;
 }
 
