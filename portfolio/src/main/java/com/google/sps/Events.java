@@ -17,6 +17,9 @@ package com.google.sps;
 
 import java.util.Arrays;
 
+/*
+    
+*/
 public final class Events {
   private static final String PERSON_AMELIA = "Amelia";
   private static final String PERSON_AVA = "Ava";

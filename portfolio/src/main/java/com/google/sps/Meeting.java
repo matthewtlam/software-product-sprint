@@ -20,14 +20,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-public final class MeetingRequest {
+public final class Meeting {
   // All the people that should be attending this new meeting. Use a set to avoid duplicates.
   private final Collection<String> attendees = new HashSet<>();
 
   // The duration of the meeting in minutes.
   private final long duration;
 
-  public MeetingRequest(Collection<String> attendees, long duration) {
+  public Meeting(Collection<String> attendees, long duration) {
     this.duration = duration;
     this.attendees.addAll(attendees);
   }

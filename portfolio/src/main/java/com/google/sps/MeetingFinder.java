@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Iterator;
 
-public final class FindMeetingQuery {
-  public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+public final class MeetingFinder {
+  public Collection<TimeRange> query(Collection<Event> events, Meeting request) {
       long duration = request.getDuration();
       Collection<TimeRange> available = Arrays.asList(TimeRange.WHOLE_DAY);
 
